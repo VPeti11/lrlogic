@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
+<rect width="640" height="480" fill="white"/>
+<line x1="0" y1="40" x2="640" y2="40" stroke="black" stroke-width="1"/>
+<text x="10" y="36" font-size="16" fill="black">Green square</text>
+<line x1="0" y1="440" x2="640" y2="440" stroke="black" stroke-width="1"/>
+<text x="10" y="460" font-size="16" fill="black">Default size</text>
+<polygon points="100,380 100,280 200,280 200,380" fill="rgb(0,255,0)" stroke="black" stroke-width="1"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700">
+<rect width="700" height="700" fill="white"/>
+<line x1="0" y1="42" x2="700" y2="42" stroke="black" stroke-width="1"/>
+<text x="10" y="38" font-size="18" fill="black">Purple shape</text>
+<polygon points="100,500 150,350 250,350 300,500" fill="rgb(128,0,128)" stroke="black" stroke-width="1"/>
+</svg>

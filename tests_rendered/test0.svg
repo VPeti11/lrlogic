@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+<rect width="800" height="600" fill="white"/>
+<line x1="0" y1="56" x2="800" y2="56" stroke="black" stroke-width="1"/>
+<text x="10" y="52" font-size="22" fill="black">Top Title</text>
+<line x1="0" y1="534" x2="800" y2="534" stroke="black" stroke-width="1"/>
+<text x="10" y="560" font-size="22" fill="black">Bottom Footer</text>
+<polygon points="100,500 100,300 300,300 300,500" fill="rgb(0,255,0)" stroke="black" stroke-width="1"/>
+</svg>

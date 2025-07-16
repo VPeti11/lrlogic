@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+<rect width="800" height="600" fill="white"/>
+<line x1="0" y1="70" x2="800" y2="70" stroke="black" stroke-width="1"/>
+<text x="10" y="66" font-size="16" fill="black">Red Rectangle</text>
+<line x1="0" y1="520" x2="800" y2="520" stroke="black" stroke-width="1"/>
+<text x="10" y="540" font-size="16" fill="black">Margins set</text>
+<polygon points="100,500 100,200 500,200 500,500" fill="rgb(255,0,0)" stroke="black" stroke-width="1"/>
+</svg>

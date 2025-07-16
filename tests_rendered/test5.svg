@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
+<rect width="640" height="480" fill="white"/>
+<line x1="0" y1="44" x2="640" y2="44" stroke="black" stroke-width="1"/>
+<text x="10" y="40" font-size="20" fill="black">Yellow square low curve</text>
+<line x1="0" y1="436" x2="640" y2="436" stroke="black" stroke-width="1"/>
+<text x="10" y="460" font-size="20" fill="black">Smooth edges</text>
+<polygon points="150,330 150,130 350,130 350,330" fill="rgb(255,255,0)" stroke="black" stroke-width="1"/>
+</svg>
