@@ -48,10 +48,10 @@ filename.jpg — a JPG version (requires rsvg-convert)
     --file	Path to .lrlogic input file	(required)
     --nojpg	Skip generating JPG output	false
     --nosvg	Delete the SVG after JPG generation	false
-
+    --verbose   Verbose mode                            false
 
 ### Example
-Create a .lrlogic file e.g. square.lrlogic:
+Create a .lrlogic file (Version 1 syntax) e.g. square.lrlogic:
 
     LRLOGIC FILE FORMAT V1
     LRTXT.Top 'Simple Red Square'
