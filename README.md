@@ -71,5 +71,5 @@ square.svg
 square.jpg
 
 ### Batch Processing
-Use the included  script to process all .lrlogic files:
+Use the included  script to process all .lrlogic files
 

@@ -1,0 +1,9 @@
+Hello there random person welcome to my git repository!
+Infront of you there is a complicated piece of software that i named LRLogic.
+Its logical you know. And the reason i made it is because im autistic enough to understand the pure vectors and i will preffer this renderer over using mspaint.
+And since i dont want this repo to be completely useless i added a random generator so you can experiment with this too.
+Just modify the .lrlogic file and see what you can create. This is basically ai art before the training phase. And its mathematical too.
+And if you want to incorporate this thing into your software you can since its open-source.
+Well as much as the GPL allows it to be used. And by the way LR stands for line-replicator an older project of mine (dont look for it, you wont find it).
+It did what the name suggested it does. This is basically that but.... way more complicated.
+And thanks to the wonderful GoLang it runs very fast. Exept for the random generator because thats made in python for some reason. Anyway im out.

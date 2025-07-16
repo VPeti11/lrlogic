@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768">
+<rect width="1024" height="768" fill="white"/>
+<circle cx="512" cy="384" r="200" fill="rgb(255,180,100)" stroke="rgb(255,180,100)" stroke-width="2"/>
+<circle cx="512" cy="384" r="160" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<circle cx="512" cy="384" r="120" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<circle cx="512" cy="384" r="0" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<circle cx="512" cy="384" r="0" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<rect x="512" y="84" width="300" height="300" fill="rgb(100,200,255)" stroke="rgb(100,200,255)" stroke-width="2"/>
+<rect x="512" y="144" width="240" height="240" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<rect x="512" y="204" width="180" height="180" fill="rgb(255,100,150)" stroke="rgb(255,100,150)" stroke-width="2"/>
+<rect x="512" y="264" width="120" height="120" fill="none" stroke="rgb(0,0,0)" stroke-width="2"/>
+<rect x="512" y="384" width="0" height="0" fill="rgb(150,255,150)" stroke="rgb(150,255,150)" stroke-width="2"/>
+<circle cx="150" cy="168" r="30" fill="rgb(255,0,0)" stroke="rgb(255,0,0)" stroke-width="2"/>
+<circle cx="250" cy="118" r="20" fill="rgb(0,255,0)" stroke="rgb(0,255,0)" stroke-width="2"/>
+<circle cx="350" cy="168" r="25" fill="none" stroke="rgb(0,0,255)" stroke-width="2"/>
+<circle cx="450" cy="118" r="15" fill="rgb(255,255,0)" stroke="rgb(255,255,0)" stroke-width="2"/>
+<path d="M 0 668 Q 512 665 1024 668" stroke="rgb(200,200,255)" fill="none" stroke-width="2"/>
+<path d="M 0 368 Q 512 365 1024 368" stroke="rgb(140,140,210)" fill="none" stroke-width="2"/>
+<path d="M 0 268 Q 512 265 1024 268" stroke="rgb(120,120,195)" fill="none" stroke-width="2"/>
+<path d="M 0 568 Q 512 565 1024 568" stroke="rgb(180,180,240)" fill="none" stroke-width="2"/>
+<path d="M 0 468 Q 512 465 1024 468" stroke="rgb(160,160,225)" fill="none" stroke-width="2"/>
+<path d="M 400 668 Q 412 635 424 608" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 424 608 Q 457 596 490 590" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 490 590 Q 465 561 440 538" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 440 538 Q 448 502 456 472" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 456 472 Q 428 487 400 508" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 400 508 Q 372 487 344 472" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 344 472 Q 352 502 360 538" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 360 538 Q 335 561 310 590" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 310 590 Q 343 596 376 608" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 376 608 Q 388 635 400 668" stroke="rgb(255,255,50)" fill="none" stroke-width="2"/>
+<path d="M 50 68 Q 175 165 300 268" stroke="rgb(150,0,150)" fill="none" stroke-width="2"/>
+<path d="M 300 268 Q 425 165 550 68" stroke="rgb(150,0,150)" fill="none" stroke-width="2"/>
+<path d="M 550 68 Q 675 165 800 268" stroke="rgb(150,0,150)" fill="none" stroke-width="2"/>
+<path d="M 800 268 Q 912 165 1024 68" stroke="rgb(150,0,150)" fill="none" stroke-width="2"/>
+<path d="M 0 718 Q 50 730 100 748" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 100 748 Q 150 715 200 688" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 200 688 Q 250 705 300 728" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 300 728 Q 350 695 400 668" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 400 668 Q 450 685 500 708" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 500 708 Q 550 675 600 648" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 600 648 Q 650 665 700 688" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 700 688 Q 750 655 800 628" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 800 628 Q 850 645 900 668" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+<path d="M 900 668 Q 962 640 1024 618" stroke="rgb(0,0,0)" fill="none" stroke-width="2"/>
+</svg>

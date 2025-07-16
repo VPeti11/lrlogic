@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768">
+<rect width="1024" height="768" fill="white"/>
+<path d="M 200 568 Q 300 562 400 568" stroke="rgb(150,50,50)" fill="none" stroke-width="2"/>
+<path d="M 400 568 Q 350 462 300 368" stroke="rgb(150,50,50)" fill="none" stroke-width="2"/>
+<path d="M 300 368 Q 250 462 200 568" stroke="rgb(150,50,50)" fill="none" stroke-width="2"/>
+<path d="M 600 568 Q 700 562 800 568" stroke="rgb(50,150,50)" fill="none" stroke-width="2"/>
+<path d="M 800 568 Q 750 462 700 368" stroke="rgb(50,150,50)" fill="none" stroke-width="2"/>
+<path d="M 700 368 Q 650 462 600 568" stroke="rgb(50,150,50)" fill="none" stroke-width="2"/>
+</svg>
