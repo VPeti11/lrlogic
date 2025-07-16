@@ -184,3 +184,37 @@ Works for:
 - Use mild `LRCURVE` (3–5) for slight bending
 
 ---
+
+## LRLOGIC FILE FORMAT V2 Extensions
+
+- **File Header:**  
+  `LRFILE VERSION 2`  
+  Indicates the file uses version 2 format.
+
+- **New Commands:**
+
+  - `LRFILL ON` / `LRFILL OFF`  
+    Enables or disables shape filling for polygons, circles, and squares.  
+    - Polygons are filled only if `LRFILL ON` is set (default is OFF in V2).  
+    - Circles and squares respect this fill flag similarly.
+
+  - `LRCIRCLE x,y,radius..r,g,b`  
+    Draws a circle centered at `(x, y)` with the specified `radius`.  
+    Color is given by RGB values `r,g,b`.  
+    Coordinates use the bottom-left origin.  
+    The circle is filled only if `LRFILL` is ON; otherwise, only the stroke is drawn.
+
+  - `LRSQUARE x,y,size..r,g,b`  
+    Draws a square with the bottom-left corner at `(x, y)` and side length `size`.  
+    Color is given by RGB values `r,g,b`.  
+    Coordinates use the bottom-left origin.  
+    The square is filled only if `LRFILL` is ON; otherwise, only the stroke is drawn.
+
+- **Behavior changes from V1:**  
+  - The `LRFILL` command controls fill behavior (default OFF in V2).  
+  - Polygons in V2 respect the `LRFILL` flag; in V1, polygons are always filled.  
+  - The new shape commands (`LRCIRCLE`, `LRSQUARE`) allow filled or stroked rendering depending on `LRFILL`.
+
+- **Backward Compatibility:**  
+  - Files with header `LRLOGIC FILE FORMAT V1` are parsed as before, with polygons always filled.  
+  - V1 files do not support `LRCIRCLE`, `LRSQUARE`, or `LRFILL` commands.
