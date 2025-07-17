@@ -10,10 +10,6 @@ The **first line** of every `.lrlogic` file must be:
 
 LRLOGIC FILE FORMAT V1
 
-yaml
-Copy
-Edit
-
 This identifies the format and must be present exactly as shown.
 
 ---
