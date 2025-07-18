@@ -1,216 +1,146 @@
-# LRLOGIC File Format Specification (Version 1)
+# LRLOGIC File Format Specification
 
-The `.lrlogic` file format defines vector-based instructions for generating SVG drawings using the LRLogic Renderer. It supports text, curves, resolution settings, and automatic shape filling based on color.
+
+## LRLOGIC FILE FORMAT V2
+
+The first line must be:
+
+```
+LRFILE VERSION 2
+```
 
 ---
 
-## File Header
+### Commands and Syntax
 
-The **first line** of every `.lrlogic` file must be:
+* `LRFILL ON` / `LRFILL OFF`
+  Enables or disables shape filling for polygons, circles, and squares. Polygons are filled only if `LRFILL ON` (default OFF in V2).
 
+* `LRCIRCLE x,y,radius..r,g,b`
+  Draws a circle centered at `(x, y)` with the specified `radius`. Color is given by RGB values. Coordinates use the bottom-left origin. Filled only if `LRFILL ON`.
+
+* `LRSQUARE x,y,size..r,g,b`
+  Draws a square with bottom-left corner `(x, y)` and side length `size`. Color as above. Filled only if `LRFILL ON`.
+
+* Behavior changes:
+
+  * `LRFILL` controls fill behavior (default OFF).
+  * Polygons respect the `LRFILL` flag (unlike V1 where polygons are always filled).
+  * New commands: `LRCIRCLE` and `LRSQUARE`.
+  * Coordinates use bottom-left origin.
+
+* Backward compatibility:
+
+  * Files with header `LRLOGIC FILE FORMAT V1` are parsed with V1 rules.
+
+---
+
+## LRLOGIC FILE FORMAT V1
+
+The first line must be:
+
+```
 LRLOGIC FILE FORMAT V1
-
-This identifies the format and must be present exactly as shown.
-
----
-
-## Commands and Syntax
-
-Each subsequent line can be one of the following instructions:
-
-### 1. Canvas Resolution
-
-#### Set the image dimensions (in pixels):
-
-LRRESDEFINEX 'width'
-
-LRRESDEFINEY 'height'
-
-#### Example:
-
-LRRESDEFINEX 1024
-
-LRRESDEFINEY 768
-
-#### Defaults: `640x480` if not set.
+```
 
 ---
 
-### 2. Margins
+### Commands and Syntax
 
-Adjust margins (in pixels) above the top text and below the bottom text:
+1. **Canvas Resolution**
 
-LRMARGIN 'top' 'bottom'
+```
+LRRESDEFINEX width
+LRRESDEFINEY height
+```
 
-#### Example:
+Defaults to `640x480` if not set.
 
-LRMARGIN 40 60
+2. **Margins**
 
-Default: `20 20`
+```
+LRMARGIN top bottom
+```
 
----
+Defaults: `20 20`
 
-### 3. Font Size
+3. **Font Size**
 
-#### Set the font size (in pixels) for text at top or bottom:
+```
+LRFONTSIZE size
+```
 
-LRFONTSIZE <size>
+Default: `16`
 
-#### Example:
+4. **Curve Strength**
 
-LRFONTSIZE 24
+```
+LRCURVE strength
+```
 
+Default: `5`
 
-#### Default: `16`
+5. **Text Commands**
 
----
+```
+LRTXT.Top 'text'
+LRTXT.Bottom 'text'
+```
 
-### 4. Curve Strength
+* Text must be enclosed in single quotes.
+* Horizontal lines are automatically drawn below (top) or above (bottom) text.
 
-Adjust the curvature of drawn lines. Higher = more curved:
+6. **Drawing Lines**
 
-LRCURVE 'strength'
-
-
-Example:
-
-LRCURVE 4
-
-
-#### Default: `5`
-
----
-
-### 5. Text Commands
-
-#### Add text with optional dividers:
-
-LRTXT.Top 'Your top text here'
-
-LRTXT.Bottom 'Your bottom text here'
-
-
-- Text must be enclosed in **single quotes**
-- A horizontal line is automatically drawn below (top) or above (bottom) the text
-
-#### Example:
-
-LRTXT.Top 'Hello World'
-
-LRTXT.Bottom 'Made with LRLogic'
-
-
----
-
-### 6. Drawing Lines
-
-Each line is specified using 4 coordinates:
-
-x1,y1,x2,y2
-
-Optionally, you can add color after the line using a double-dot (`..`) followed by an RGB triplet:
-
+```
 x1,y1,x2,y2..R,G,B
+```
 
-Example:
-100,100,300,100..255,0,0
+* Default color is black.
+* All coordinates must be integers.
+* Origin (0,0) is at top-left corner.
+* +X goes right, +Y goes down.
 
-This draws a red curved line from (100,100) to (300,100).
+7. **File End**
 
-#### Notes:
-- Default color is black if not specified
-- All coordinates must be integers
-- Origin (0,0) is at the **top-right corner**
-- +X goes right, +Y goes down
+```
+LREXIT
+```
 
----
-
-### 7. File End
-
-Signal the end of input with:
-
-    LREXIT
-
-This must be the last line.
+Must be the last line.
 
 ---
 
-##  Shape Filling
+### Shape Filling
 
-If **multiple lines with the same RGB color** form a **closed shape**, the area is automatically filled with that color.
-
-Requirements:
-- Must form a closed loop (start = end)
-- All edges must have the exact same RGB color
-
-Works for:
-- Triangles
-- Squares
-- Pentagons
-- Any closed polygon
+* Multiple lines with the same RGB color forming a closed shape (start = end) are automatically filled.
+* Works for triangles, squares, pentagons, and any closed polygon.
 
 ---
 
+### Rules & Limitations
 
-## Rules & Limitations
-
-- Lines must be defined before `LREXIT`
-- Only single-quoted text is supported
-- Coordinates must be integers
-- RGB values must be integers (0–255)
-- Blank lines or comments are **not** supported
-- All commands are **case-sensitive**
+* Lines must be defined before `LREXIT`.
+* Only single-quoted text supported.
+* Coordinates and RGB values are integers.
+* Blank lines or comments not supported.
+* Commands are case-sensitive.
 
 ---
 
-##  File Naming
+## File Naming
 
-- The program outputs:
-  - `filename.svg` (vector image)
-  - `filename.jpg` (if JPG is enabled)
-- File name is based on the `.lrlogic` file name
+* Outputs:
+
+  * `filename.svg` (vector image)
+  * `filename.jpg` (if JPG enabled)
+* Filename based on input `.lrlogic` file.
 
 ---
 
 ## Tips
 
-- Use precise coordinates to ensure polygons close cleanly
-- Reuse RGB values for grouped shapes
-- Use higher resolutions for more detailed drawings
-- Use mild `LRCURVE` (3–5) for slight bending
-
----
-
-## LRLOGIC FILE FORMAT V2 Extensions
-
-- **File Header:**  
-  `LRFILE VERSION 2`  
-  Indicates the file uses version 2 format.
-
-- **New Commands:**
-
-  - `LRFILL ON` / `LRFILL OFF`  
-    Enables or disables shape filling for polygons, circles, and squares.  
-    - Polygons are filled only if `LRFILL ON` is set (default is OFF in V2).  
-    - Circles and squares respect this fill flag similarly.
-
-  - `LRCIRCLE x,y,radius..r,g,b`  
-    Draws a circle centered at `(x, y)` with the specified `radius`.  
-    Color is given by RGB values `r,g,b`.  
-    Coordinates use the bottom-left origin.  
-    The circle is filled only if `LRFILL` is ON; otherwise, only the stroke is drawn.
-
-  - `LRSQUARE x,y,size..r,g,b`  
-    Draws a square with the bottom-left corner at `(x, y)` and side length `size`.  
-    Color is given by RGB values `r,g,b`.  
-    Coordinates use the bottom-left origin.  
-    The square is filled only if `LRFILL` is ON; otherwise, only the stroke is drawn.
-
-- **Behavior changes from V1:**  
-  - The `LRFILL` command controls fill behavior (default OFF in V2).  
-  - Polygons in V2 respect the `LRFILL` flag; in V1, polygons are always filled.  
-  - The new shape commands (`LRCIRCLE`, `LRSQUARE`) allow filled or stroked rendering depending on `LRFILL`.
-
-- **Backward Compatibility:**  
-  - Files with header `LRLOGIC FILE FORMAT V1` are parsed as before, with polygons always filled.  
-  - V1 files do not support `LRCIRCLE`, `LRSQUARE`, or `LRFILL` commands.
+* Use precise coordinates to close polygons cleanly.
+* Reuse RGB values for grouped shapes.
+* Use higher resolution for detailed drawings.
+* Use mild `LRCURVE` values (3–5) for slight bending.
