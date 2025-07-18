@@ -101,6 +101,9 @@ def main():
     if root.tag.startswith('{'):
         ns = root.tag[: root.tag.index('}') + 1]
 
+	# Start measuring time
+    start_time = time.time()
+
     output = ["LRFILE VERSION 2", "LRFILL OFF"]
 
     width = root.get('width')
@@ -159,6 +162,10 @@ def main():
         f.write('\n'.join(output))
 
     print("Generated", out_file)
+    # Measure the time elapsed
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Done! Time elapsed: {elapsed_time:.2f} seconds")
 
 if __name__ == "__main__":
     main()

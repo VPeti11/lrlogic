@@ -3,6 +3,7 @@ import sys
 import random
 import argparse
 import subprocess
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 def worker(i, width, height, maxshapes, shape_weights, render, cleanup):
@@ -53,33 +54,55 @@ def worker(i, width, height, maxshapes, shape_weights, render, cleanup):
 def main():
     os.makedirs("randomgen", exist_ok=True)
 
+
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--count', type=int)
-    parser.add_argument('--maxshapes', type=int)
+    parser.add_argument('--count', type=int, default=100, help="Number of files to generate (default: 100)")
+    parser.add_argument('--maxshapes', type=int, default=100, help="Maximum number of shapes per file (default: 100)")
     parser.add_argument('--width', type=int)
     parser.add_argument('--height', type=int)
-    parser.add_argument('--render', action='store_true')
+    parser.add_argument('--render', action='store_true', default=True, help="Render files (default: enabled)")
     parser.add_argument('--cleanup', action='store_true')
-    parser.add_argument('--ratio', type=str)
+    parser.add_argument('--ratio', type=str, help="Shape ratio line,circle,square (default: 5,2,3)")
     args = parser.parse_args()
 
-    if args.count is None:
-        args.count = int(input("How many files: ").strip())
-    if args.maxshapes is None:
-        args.maxshapes = int(input("Max shapes per file: ").strip())
+    # Ask for input if no arguments are provided
+    if args.count == 100:  # Default value, so prompt user
+        args.count = int(input(f"How many files to generate? (default: {args.count}): ").strip() or args.count)
+    
+    if args.maxshapes == 100:  # Default value, so prompt user
+        args.maxshapes = int(input(f"Max shapes per file? (default: {args.maxshapes}): ").strip() or args.maxshapes)
+
     if args.width is None:
         args.width = int(input("Canvas width (default 1024): ").strip() or 1024)
+    
     if args.height is None:
         args.height = int(input("Canvas height (default 768): ").strip() or 768)
+    
+    # Adjust the render option
     if '--render' not in sys.argv:
-        args.render = input("Render files? (yes/no): ").strip().lower() == 'yes'
+        render_input = input("Render files? (y/n, default: y): ").strip().lower()
+        if render_input == 'n' or render_input == 'no':
+            args.render = False  # Disable rendering if user types 'n' or 'no'
+        else:
+            args.render = True  # Enable rendering if user presses Enter or types 'y'/'yes'
+    
     if '--cleanup' not in sys.argv:
-        args.cleanup = input("Delete .lrlogic after rendering? (yes/no): ").strip().lower() == 'yes'
-    if args.ratio is None:
-        ratio_str = input("Shape ratio line,circle,square (e.g. 5,2,3): ").strip()
-        args.ratio = ratio_str
+        cleanup_input = input("Delete .lrlogic after rendering? (y/n): ").strip().lower()
+        args.cleanup = cleanup_input in ['y', 'yes']
 
-    shape_weights = [1, 1, 1]
+    # Handle shape ratio input
+    if args.ratio is None:
+        ratio_input = input("Shape ratio line,circle,square (default: 5,2,3): ").strip()
+        if not ratio_input:
+            # Default to 5,2,3 if the user presses Enter without typing anything
+            args.ratio = "5,2,3"
+        else:
+            args.ratio = ratio_input
+
+    print(f"Using shape ratio: {args.ratio}")
+
+    shape_weights = [5, 2, 3]  # Default ratio is 5 (line), 2 (circle), 3 (square)
     parts = args.ratio.split(',')
     if len(parts) == 3:
         try:
@@ -87,12 +110,18 @@ def main():
         except ValueError:
             pass  # fallback to defaults if input is invalid
 
+    # Start measuring time
+    start_time = time.time()
+    
     with ProcessPoolExecutor() as executor:
         tasks = [executor.submit(worker, i+1, args.width, args.height, args.maxshapes, shape_weights, args.render, args.cleanup) for i in range(args.count)]
         for _ in as_completed(tasks):
             pass
 
-    print("Done")
+    # Measure the time elapsed
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Done! Time elapsed: {elapsed_time:.2f} seconds")
 
 if __name__ == "__main__":
     main()
