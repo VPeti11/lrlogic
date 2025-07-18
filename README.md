@@ -139,7 +139,7 @@ This script generates .lrlogic files with randomized shapes and optionally rende
 | `--ratio`     | str  | `"5,2,3"` | Shape ratio for line,circle,square generation   |
 
 #### Example:
-    python3 your_script.py --count 50 --maxshapes 30 --width 800 --height 600 --render --cleanup --ratio 4,3,3
+    python3 randomgen.py --count 50 --maxshapes 30 --width 800 --height 600 --render --cleanup --ratio 4,3,3
 Generates 50 .lrlogic files,
 
 Each with up to 30 shapes,
