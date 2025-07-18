@@ -20,7 +20,6 @@ case $choice in
     echo "Running Full Test..."
     rm *.svg
     rm *.jpg
-    set -e
     go build main.go
     mv main lrlogic
     cp ./Tests/*.lrlogic ./
