@@ -227,3 +227,6 @@ As an extra the `.lrlogic` files included in this project are also licensed unde
 You can read the license [here](LICENSE.md)
 
 The documentation and README files are licensed under the GFDL that you can read [here](fdl.md)
+
+# Contributing
+If you want to make the project better check out the docs [here](CONTRIBUTING.md)
