@@ -1,5 +1,3 @@
----
-
 # LRLogic Windows Runtime
 
 ## Overview
