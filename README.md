@@ -20,14 +20,35 @@ Dont ask why this exist. Its simple logic to me but i cant imagine this being us
 
 ---
 
-## Installation
+## Installing LRLogic
+LRLogic is designed as a portable application both on windows and linux. On windows you can find the executable in the `win-runtime` folder or just use the regular `.exe` files or scripts. For linux its the same other than there is no launcher. For a regular install you can do the following:
 
-Make sure you have Go installed
+### Linux
+Download or compile the `installer.go` file and run the command:
 
-Clone the repository or copy `main.go`, then build:
+    chmod +x installer
+    
+Then run the installer by typing:
+
+    sudo ./installer
+    
+### Windows
+Download the `LRLogic setup.exe` file and go trough the setup process. You will need Powershell enabled in `optionalfeatures` so the program would install succesfully. More on the Windows version can be found in the [Windows runtime README](win-runtime/README.md)
+
+## Compiling Go code
+
+This can be used not just with the main LRLogic source but with the SVG2LR - Go helper and the installer
+
+Make sure you have Go installed. Clone the repository and locate the source code you want to compile, then build:
 
 ```
 go build -o lrlogic main.go
+```
+
+On Windows its almost the same:
+
+```
+go build -o lrlogic.exe main.go
 ```
 
 ## File format
