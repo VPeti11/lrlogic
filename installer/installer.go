@@ -68,29 +68,11 @@ func main() {
 		log.Fatalf("Failed to change directory: %v", err)
 	}
 
-	if err := ChangeDirectory("Go"); err != nil {
-		log.Fatalf("Failed to change directory: %v", err)
-	}
-
 	fmt.Println("Building Go binary...")
 	if err := InstallGoBinary("main.go", "svg2lr"); err != nil {
 		log.Fatalf("Failed to build Go binary: %v", err)
 	}
-
-	err := os.Chdir("..")
-	if err != nil {
-		fmt.Println("Failed to change directory:", err)
-	}
-
-	if err := ChangeDirectory("PY"); err != nil {
-		log.Fatalf("Failed to change directory: %v", err)
-	}
-
-	fmt.Println("Installing Python script...")
-	if err := InstallPythonScript("transformsvg2lr.py", "svg2lrpy"); err != nil {
-		log.Fatalf("Failed to install Python script: %v", err)
-	}
-	InstallPythonPackage("svg.path", true)
+	InstallPythonPackage("svg.path", false)
 
 	PromptContinue("All installation steps completed successfully! Press Enter to exit.")
 }

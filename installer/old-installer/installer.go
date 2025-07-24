@@ -27,18 +27,18 @@ func commandExists(cmd string) bool {
 func detectPackageManager() string {
 	fmt.Println("Detecting package manager...")
 	switch {
-		case commandExists("apt"):
-			fmt.Println("Detected apt package manager")
-			return "apt"
-		case commandExists("dnf"):
-			fmt.Println("Detected dnf package manager")
-			return "dnf"
-		case commandExists("pacman"):
-			fmt.Println("Detected pacman package manager")
-			return "pacman"
-		default:
-			fmt.Println("No supported package manager found.")
-			os.Exit(1)
+	case commandExists("apt"):
+		fmt.Println("Detected apt package manager")
+		return "apt"
+	case commandExists("dnf"):
+		fmt.Println("Detected dnf package manager")
+		return "dnf"
+	case commandExists("pacman"):
+		fmt.Println("Detected pacman package manager")
+		return "pacman"
+	default:
+		fmt.Println("No supported package manager found.")
+		os.Exit(1)
 	}
 	return ""
 }
@@ -46,16 +46,16 @@ func detectPackageManager() string {
 func installDeps(manager string) {
 	fmt.Println("Installing dependencies...")
 	switch manager {
-		case "apt":
-			exec.Command("sudo", "apt", "update").Run()
-			exec.Command("sudo", "apt", "install", "-y", "librsvg2-bin", "python3", "python3-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via apt")
-		case "dnf":
-			exec.Command("sudo", "dnf", "install", "-y", "librsvg2", "python3", "python3-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via dnf")
-		case "pacman":
-			exec.Command("sudo", "pacman", "-Syu", "--noconfirm", "librsvg", "python", "python-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via pacman")
+	case "apt":
+		exec.Command("sudo", "apt", "update").Run()
+		exec.Command("sudo", "apt", "install", "-y", "librsvg2-bin", "python3", "python3-pip", "go", "git").Run()
+		fmt.Println("Installed dependencies via apt")
+	case "dnf":
+		exec.Command("sudo", "dnf", "install", "-y", "librsvg2", "python3", "python3-pip", "go", "git").Run()
+		fmt.Println("Installed dependencies via dnf")
+	case "pacman":
+		exec.Command("sudo", "pacman", "-Syu", "--noconfirm", "librsvg", "python", "python-pip", "go", "git").Run()
+		fmt.Println("Installed dependencies via pacman")
 	}
 }
 
@@ -139,7 +139,6 @@ func main() {
 	installPythonSVGPath(manager)
 
 	installPythonScript("randomgen.py", "lrrandomgen")
-	installPythonScript("svg2lrlogic/PY/transformsvg2lr.py", "pysvg2lr")
 
 	cwd, err := os.Getwd()
 	if err != nil {

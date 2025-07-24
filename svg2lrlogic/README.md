@@ -1,5 +1,7 @@
 # LRLogic SVG2LR converter
 As the name implies this directory contains programs used to convert SVG files into .lrlogic files
+
+The code is now updated to bundle the Python version into the Go version. The old .py file is still included
 ## Whats the difference between the formats
 Not a lot honestly. Its just one is an XML format and the other one is meant to tear your brain appart. Well not for me atleast. The .lrlogic format is still more readable than SVG files. But structurewise the formats are both vector formats and they both need to be rendered. But .lrlogic files get translated into .svg files for better compatibility and get rendered after. I could make a straight up renderer but i wont
 ## Why are there 2 converters here?
