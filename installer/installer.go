@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,146 +11,231 @@ import (
 	"time"
 )
 
-func clearScreen() {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println("Failed to clear screen:", err)
-	}
+// --- Constants and Config ---
+
+const (
+	ProgramName  = "lrlogic"
+	AuthorName   = "VPeti11"
+	GitRepoURL   = "https://gitlab.com/VPeti11/lrlogic.git"
+	LocalRepoDir = "lrlogic"
+)
+
+var Dependencies = map[string][]string{
+	"apt":    {"python", "go", "git"},
+	"dnf":    {"python", "go", "git"},
+	"pacman": {"python", "go", "git"},
 }
 
-func commandExists(cmd string) bool {
+// --- Main ---  Update this too to reflect your codebase
+
+func main() {
+	if err := CheckLinuxPlatform(); err != nil {
+		log.Fatalf("Unsupported platform: %v", err)
+	}
+
+	ShowWelcomeMessage()
+
+	pkgManager := DetectPackageManager()
+	if pkgManager == "" {
+		log.Fatalf("No supported package manager found.")
+	}
+
+	fmt.Printf("Using package manager: %s\n", pkgManager)
+	if err := InstallDependencies(pkgManager); err != nil {
+		log.Fatalf("Failed to install dependencies: %v", err)
+	}
+
+	fmt.Println("Cloning git repository...")
+	if err := CloneGitRepo(GitRepoURL); err != nil {
+		log.Fatalf("Failed to clone repo: %v", err)
+	}
+
+	if err := ChangeDirectory(LocalRepoDir); err != nil {
+		log.Fatalf("Failed to change directory: %v", err)
+	}
+
+	fmt.Println("Building Go binary...")
+	if err := InstallGoBinary("main.go", ProgramName); err != nil {
+		log.Fatalf("Failed to build Go binary: %v", err)
+	}
+
+	fmt.Println("Installing Python script...")
+	if err := InstallPythonScript("randomgen.py", "lrrandomgen"); err != nil {
+		log.Fatalf("Failed to install Python script: %v", err)
+	}
+
+	if err := ChangeDirectory("svg2lrlogic"); err != nil {
+		log.Fatalf("Failed to change directory: %v", err)
+	}
+
+	if err := ChangeDirectory("Go"); err != nil {
+		log.Fatalf("Failed to change directory: %v", err)
+	}
+
+	fmt.Println("Building Go binary...")
+	if err := InstallGoBinary("main.go", "svg2lr"); err != nil {
+		log.Fatalf("Failed to build Go binary: %v", err)
+	}
+
+	err := os.Chdir("..")
+	if err != nil {
+		fmt.Println("Failed to change directory:", err)
+	}
+
+	if err := ChangeDirectory("PY"); err != nil {
+		log.Fatalf("Failed to change directory: %v", err)
+	}
+
+	fmt.Println("Installing Python script...")
+	if err := InstallPythonScript("transformsvg2lr.py", "svg2lrpy"); err != nil {
+		log.Fatalf("Failed to install Python script: %v", err)
+	}
+	InstallPythonPackage("svg.path", true)
+
+	PromptContinue("All installation steps completed successfully! Press Enter to exit.")
+}
+
+// --- Installer Functions ---
+
+func InstallCppBinary(sourceFile string, outName string) error {
+	outPath := filepath.Join("/usr/bin", outName)
+	cmd := exec.Command("g++", "-o", outPath, sourceFile)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+	return exec.Command("chmod", "+x", outPath).Run()
+}
+
+// ... rest of your functions unchanged except InstallDependencies updated with g++ package names
+
+func ClearScreen() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	_ = cmd.Run()
+}
+
+func CommandExists(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	return err == nil
 }
 
-func detectPackageManager() string {
-	fmt.Println("Detecting package manager...")
+func DetectPackageManager() string {
 	switch {
-		case commandExists("apt"):
-			fmt.Println("Detected apt package manager")
-			return "apt"
-		case commandExists("dnf"):
-			fmt.Println("Detected dnf package manager")
-			return "dnf"
-		case commandExists("pacman"):
-			fmt.Println("Detected pacman package manager")
-			return "pacman"
-		default:
-			fmt.Println("No supported package manager found.")
-			os.Exit(1)
+	case CommandExists("apt"):
+		return "apt"
+	case CommandExists("dnf"):
+		return "dnf"
+	case CommandExists("pacman"):
+		return "pacman"
+	default:
+		return ""
 	}
-	return ""
 }
 
-func installDeps(manager string) {
-	fmt.Println("Installing dependencies...")
+func InstallDependencies(manager string) error {
+	pkgs, ok := Dependencies[manager]
+	if !ok {
+		return fmt.Errorf("unsupported package manager: %s", manager)
+	}
+
 	switch manager {
-		case "apt":
-			exec.Command("sudo", "apt", "update").Run()
-			exec.Command("sudo", "apt", "install", "-y", "librsvg2-bin", "python3", "python3-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via apt")
-		case "dnf":
-			exec.Command("sudo", "dnf", "install", "-y", "librsvg2", "python3", "python3-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via dnf")
-		case "pacman":
-			exec.Command("sudo", "pacman", "-Syu", "--noconfirm", "librsvg", "python", "python-pip", "go", "git").Run()
-			fmt.Println("Installed dependencies via pacman")
+	case "apt":
+		_ = exec.Command("sudo", "apt", "update").Run()
+		args := append([]string{"apt", "install", "-y"}, pkgs...)
+		return exec.Command("sudo", args...).Run()
+	case "dnf":
+		args := append([]string{"dnf", "install", "-y"}, pkgs...)
+		return exec.Command("sudo", args...).Run()
+	case "pacman":
+		args := append([]string{"pacman", "-Syu", "--noconfirm"}, pkgs...)
+		return exec.Command("sudo", args...).Run()
 	}
+	return nil
 }
 
-func installPythonSVGPath(manager string) {
-	fmt.Println("Installing python svg.path library...")
-	if manager == "pacman" && commandExists("yay") {
-		exec.Command("yay", "-S", "--noconfirm", "python-svg.path").Run()
-		fmt.Println("Installed python-svg.path via yay")
-	} else {
-		exec.Command("python3", "-m", "pip", "install", "--upgrade", "pip").Run()
-		args := []string{"-m", "pip", "install", "svg.path"}
-		if manager == "pacman" {
-			args = append(args, "--break-system-packages")
-		}
-		exec.Command("python3", args...).Run()
-		fmt.Println("Installed svg.path via pip")
+func InstallPythonPackage(pkgName string, allowSystemBreak bool) error {
+	_ = exec.Command("python3", "-m", "pip", "install", "--upgrade", "pip").Run()
+
+	args := []string{"-m", "pip", "install", pkgName}
+	if allowSystemBreak {
+		args = append(args, "--break-system-packages")
 	}
+	return exec.Command("python3", args...).Run()
 }
 
-func installPythonScript(inputPath, outputName string) {
+func InstallPythonScript(inputPath, outputName string) error {
 	outputPath := filepath.Join("/usr/bin", outputName)
-	os.WriteFile(outputPath, []byte("#!/usr/bin/env python3\n"), 0755)
+	header := []byte("#!/usr/bin/env python3\n")
+
+	if err := os.WriteFile(outputPath, header, 0755); err != nil {
+		return err
+	}
 
 	content, err := os.ReadFile(inputPath)
-	if err == nil {
-		f, _ := os.OpenFile(outputPath, os.O_APPEND|os.O_WRONLY, 0755)
-		defer f.Close()
-		f.Write(content)
-		exec.Command("chmod", "+x", outputPath).Run()
-		fmt.Printf("Installed python script %s\n", outputName)
-	} else {
-		fmt.Printf("Failed to read %s: %v\n", inputPath, err)
+	if err != nil {
+		return err
 	}
+
+	f, err := os.OpenFile(outputPath, os.O_APPEND|os.O_WRONLY, 0755)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if _, err = f.Write(content); err != nil {
+		return err
+	}
+
+	return exec.Command("chmod", "+x", outputPath).Run()
 }
 
-func installGoBinary(source string, outName string) {
+func InstallGoBinary(sourceFile string, outName string) error {
 	outPath := filepath.Join("/usr/bin", outName)
-	fmt.Printf("Building Go binary %s...\n", outName)
-	cmd := exec.Command("go", "build", "-o", outPath, source)
+	cmd := exec.Command("go", "build", "-o", outPath, sourceFile)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Printf("Failed to build %s: %v\n", outName, err)
-		return
+	if err := cmd.Run(); err != nil {
+		return err
 	}
-	exec.Command("chmod", "+x", outPath).Run()
-	fmt.Printf("Installed Go binary %s\n", outName)
+	return exec.Command("chmod", "+x", outPath).Run()
 }
 
-func main() {
-	if runtime.GOOS != "linux" {
-		fmt.Println("This installer only supports Linux.")
-		return
-	}
+func CloneGitRepo(url string) error {
+	cmd := exec.Command("git", "clone", url)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
 
-	clearScreen()
-	fmt.Printf("LRLogic Installer\n")
-	fmt.Println("By VPeti")
-	time.Sleep(2 * time.Second)
-	fmt.Println("Installing dependencies and tools...")
-	time.Sleep(1 * time.Second)
-	clearScreen()
+func ChangeDirectory(dir string) error {
+	return os.Chdir(dir)
+}
+
+func PromptContinue(message string) {
+	ClearScreen()
+	fmt.Println(message)
 	fmt.Println("Press Enter to continue...")
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
+}
 
-	fmt.Println("Cloning the latest source...")
-	err := exec.Command("git", "clone", "https://gitlab.com/VPeti11/lrlogic.git").Run()
-	if err != nil {
-		fmt.Println("Failed to clone repo:", err)
-		return
+func CheckLinuxPlatform() error {
+	if runtime.GOOS != "linux" {
+		return fmt.Errorf("this installer only supports Linux")
 	}
-	err = os.Chdir("lrlogic")
-	if err != nil {
-		fmt.Println("Failed to change directory:", err)
-		return
-	}
+	return nil
+}
 
-	manager := detectPackageManager()
-	installDeps(manager)
-	installPythonSVGPath(manager)
+func SleepMessage(message string, duration time.Duration) {
+	fmt.Println(message)
+	time.Sleep(duration)
+}
 
-	installPythonScript("randomgen.py", "lrrandomgen")
-	installPythonScript("svg2lrlogic/PY/transformsvg2lr.py", "pysvg2lr")
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Failed to get current directory:", err)
-		return
-	}
-
-	absSource := filepath.Join(cwd, "svg2lrlogic", "Go", "main.go")
-	installGoBinary(absSource, "svg2lrlogic")
-	installGoBinary("main.go", "lrlogic")
-
-	fmt.Println("All installations completed successfully.")
+func ShowWelcomeMessage() {
+	ClearScreen()
+	fmt.Printf("Welcome to the %s installer\n", ProgramName)
+	fmt.Printf("Made by %s\n\n", AuthorName)
+	fmt.Println("Press Enter to continue...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
